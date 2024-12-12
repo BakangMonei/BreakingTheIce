@@ -41,7 +41,6 @@ export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
-      
       <Text style={styles.title}>LOGIN</Text>
 
       <View style={styles.formContainer}>

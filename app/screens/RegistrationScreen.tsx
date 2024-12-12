@@ -1,116 +1,147 @@
-// src/screens/RegistrationScreen.tsx
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, SafeAreaView } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { COLORS } from "../theme/colors";
-import { Button } from "../components/Button";
+import React, { useState } from 'react';
+import { 
+  Text, 
+  View, 
+  TouchableOpacity, 
+  TextInput, 
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  Alert
+} from "react-native";
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+// Shared components and styles
+import { styles } from '../styles/AuthStyles';
+import { validatePassword, validateEmail } from '../utils/Validation';
 
 type RootStackParamList = {
-  Registration: undefined;
   Login: undefined;
+  Register: undefined;
 };
 
-type RegistrationScreenProps = NativeStackScreenProps<
-  RootStackParamList,
-  "Registration"
->;
+type Props = {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'Register'>;
+};
 
-export const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
-  navigation,
-}) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+export default function RegistrationScreen({ navigation }: Props) {
+  const [formData, setFormData] = useState({
+    email: '',
+    firstName: '',
+    lastName: '',
+    dob: '',
+    physicalAddress: '',
+    phoneNumber: '',
+    gender: '',
+    password: '',
+    confirmPassword: ''
+  });
+
+  const [errors, setErrors] = useState({});
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const validateForm = () => {
+    let validationErrors = {};
+
+    // Email validation
+    if (!validateEmail(formData.email)) {
+      validationErrors.email = 'Valid email is required';
+    }
+
+    // Name validations
+    if (!formData.firstName) validationErrors.firstName = 'First name is required';
+    // if (!formData.lastName) validationErrors.lastName = 'Last name is required';
+
+    // // DOB validation (basic)
+    // if (!formData.dob) validationErrors.dob = 'Date of Birth is required';
+
+    // // Phone number validation
+    // if (!formData.phoneNumber || !/^\d{10}$/.test(formData.phoneNumber)) {
+    //   validationErrors.phoneNumber = 'Valid 10-digit phone number is required';
+    // }
+
+    // // Gender validation
+    // if (!formData.gender) validationErrors.gender = 'Gender selection is required';
+
+    // // Password validation
+    // if (!formData.password) {
+    //   validationErrors.password = 'Password is required';
+    // } else if (!validatePassword(formData.password)) {
+    //   validationErrors.password = 'Password must be 8+ chars, include special char & number';
+    // }
+
+    // // Confirm password validation
+    // if (formData.password !== formData.confirmPassword) {
+    //   validationErrors.confirmPassword = 'Passwords must match';
+    // }
+
+    setErrors(validationErrors);
+    return Object.keys(validationErrors).length === 0;
+  };
 
   const handleRegistration = () => {
-    if (password !== confirmPassword) {
-      console.log("Passwords do not match");
-      return;
+    if (validateForm()) {
+      // Implement registration logic here
+      Alert.alert(
+        'Registration Successful', 
+        'Your account has been created!',
+        [{ text: 'OK', onPress: () => navigation.navigate('Login') }]
+      );
     }
-    // Implement registration logic
-    console.log("Registration attempt", { email, password });
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Create Account</Text>
+    <KeyboardAvoidingView 
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <Text style={styles.title}>REGISTER</Text>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor={COLORS.GRAY}
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor={COLORS.GRAY}
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-
-        <TextInput
-          style={styles.input}
-          placeholder="Confirm Password"
-          placeholderTextColor={COLORS.GRAY}
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          secureTextEntry
-        />
-
-        <Button title="Sign Up" onPress={handleRegistration} />
-
-        <View style={styles.loginContainer}>
-          <Text style={styles.loginText}>Already have an account? </Text>
-          <Button
-            title="Login"
-            variant="secondary"
-            onPress={() => navigation.navigate("Login")}
+        <View style={styles.inputGroup}>
+          <TextInput
+            placeholder="Email"
+            placeholderTextColor="#888"
+            style={[styles.input, errors.email && styles.inputError]}
+            value={formData.email}
+            onChangeText={(value) => handleInputChange('email', value)}
+            keyboardType="email-address"
+            autoCapitalize="none"
           />
-        </View>
-      </View>
-    </SafeAreaView>
-  );
-};
+          {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.WHITE,
-  },
-  content: {
-    flex: 1,
-    padding: 20,
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: COLORS.PRIMARY_BLACK,
-    marginBottom: 30,
-    textAlign: "center",
-  },
-  input: {
-    backgroundColor: COLORS.WHITE,
-    borderWidth: 1,
-    borderColor: COLORS.GRAY,
-    borderRadius: 8,
-    padding: 12,
-    marginVertical: 10,
-    color: COLORS.PRIMARY_BLACK,
-  },
-  loginContainer: {
-    marginTop: 20,
-    alignItems: "center",
-  },
-  loginText: {
-    color: COLORS.PRIMARY_BLACK,
-    marginBottom: 10,
-  },
-});
+
+          <TextInput
+            placeholder="FirstName"
+            placeholderTextColor="#888"
+            style={[styles.input, errors.firstName && styles.inputError]}
+            value={formData.firstName}
+            onChangeText={(value) => handleInputChange('firstName', value)}
+            autoCapitalize="none"
+          />
+          {errors.firstName && <Text style={styles.errorText}>{errors.firstName}</Text>}
+
+          <TouchableOpacity 
+            style={styles.loginButton}
+            onPress={handleRegistration}
+          >
+            <Text style={styles.loginButtonText}>REGISTER</Text>
+          </TouchableOpacity>
+
+          <View style={styles.registerContainer}>
+            <Text style={styles.registerText}>Already have an account? </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.registerLinkText}>Login</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
+}

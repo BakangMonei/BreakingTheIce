@@ -16,13 +16,12 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
     const timer = setTimeout(() => {
       navigation.replace("Login");
     }, 2000);
-
     return () => clearTimeout(timer);
   }, [navigation]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.logo}>MyApp</Text>
+      <Text style={styles.logo}>Breaking The Ice</Text>
     </View>
   );
 };

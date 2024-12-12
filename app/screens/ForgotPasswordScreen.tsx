@@ -1,96 +1,73 @@
-// src/screens/ForgotPasswordScreen.tsx
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, SafeAreaView } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { COLORS } from "../theme/colors";
-import { Button } from "../components/Button";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 
-type RootStackParamList = {
-  ForgotPassword: undefined;
-  Login: undefined;
-};
+// Shared components and styles
+import { styles } from "../styles/AuthStyles";
+import { validateEmail } from "../utils/Validation";
 
-type ForgotPasswordScreenProps = NativeStackScreenProps<
-  RootStackParamList,
-  "ForgotPassword"
->;
-
-export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
-  navigation,
-}) => {
+export default function ForgotPasswordScreen({ navigation }) {
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
 
-  const handlePasswordReset = () => {
-    // Implement password reset logic
-    console.log("Password reset attempt", { email });
+  const handleResetPassword = () => {
+    // Validate email
+    if (!validateEmail(email)) {
+      setEmailError("Please enter a valid email");
+      return;
+    }
+
+    // Clear any previous errors
+    setEmailError("");
+
+    // Implement password reset logic here
+    Alert.alert(
+      "Password Reset",
+      "If an account exists with this email, a reset link will be sent.",
+      [{ text: "OK", onPress: () => navigation.goBack() }]
+    );
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Reset Password</Text>
-        <Text style={styles.subtitle}>
-          Enter the email associated with your account
-        </Text>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <View style={styles.formContainer}>
+        <Text style={styles.title}>RESET PASSWORD</Text>
 
         <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor={COLORS.GRAY}
+          placeholder="Enter your email"
+          placeholderTextColor="#888"
+          style={[styles.input, emailError && styles.inputError]}
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
           autoCapitalize="none"
         />
+        {emailError && <Text style={styles.errorText}>{emailError}</Text>}
 
-        <Button title="Send Reset Link" onPress={handlePasswordReset} />
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={handleResetPassword}
+        >
+          <Text style={styles.loginButtonText}>RESET PASSWORD</Text>
+        </TouchableOpacity>
 
-        <View style={styles.loginContainer}>
-          <Button
-            title="Back to Login"
-            variant="secondary"
-            onPress={() => navigation.navigate("Login")}
-          />
-        </View>
+        <TouchableOpacity
+          style={styles.backToLoginContainer}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.backToLoginText}>Back to Login</Text>
+        </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.WHITE,
-  },
-  content: {
-    flex: 1,
-    padding: 20,
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: COLORS.PRIMARY_BLACK,
-    marginBottom: 10,
-    textAlign: "center",
-  },
-  subtitle: {
-    fontSize: 16,
-    color: COLORS.GRAY,
-    marginBottom: 30,
-    textAlign: "center",
-  },
-  input: {
-    backgroundColor: COLORS.WHITE,
-    borderWidth: 1,
-    borderColor: COLORS.GRAY,
-    borderRadius: 8,
-    padding: 12,
-    marginVertical: 10,
-    color: COLORS.PRIMARY_BLACK,
-  },
-  loginContainer: {
-    marginTop: 20,
-    alignItems: "center",
-  },
-});
+}

@@ -1,43 +1,47 @@
-// src/screens/LoginScreen.tsx
 import React, { useState } from "react";
 import {
-  View,
   Text,
-  StyleSheet,
-  TextInput,
+  View,
   TouchableOpacity,
-  SafeAreaView,
+  TextInput,
+  StyleSheet,
+  Image,
 } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { COLORS } from "../theme/colors";
-import { Button } from "../components/Button";
 
-type RootStackParamList = {
-  Login: undefined;
-  Registration: undefined;
-  ForgotPassword: undefined;
-};
+// Shared components and styles
+import { styles } from "../styles/AuthStyles";
+import SocialImageButton from "../components/SocialImageButton";
 
-type LoginScreenProps = NativeStackScreenProps<RootStackParamList, "Login">;
-
-export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
+export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const handleGoogleSignIn = () => {
+    console.log("Google Sign-In clicked");
+  };
+
+  const handleOfficeSignIn = () => {
+    console.log("Office Sign-In clicked");
+  };
+
+  const handleAppleSignIn = () => {
+    console.log("Apple Sign-In clicked");
+  };
+
   const handleLogin = () => {
-    // Implement login logic
-    console.log("Login attempt", { email, password });
+    // Implement login logic here
+    console.log("Login attempted");
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Welcome Back</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>LOGIN</Text>
 
+      <View style={styles.formContainer}>
         <TextInput
-          style={styles.input}
           placeholder="Email"
-          placeholderTextColor={COLORS.GRAY}
+          placeholderTextColor="#888"
+          style={styles.input}
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -45,72 +49,47 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         />
 
         <TextInput
-          style={styles.input}
           placeholder="Password"
-          placeholderTextColor={COLORS.GRAY}
+          placeholderTextColor="#888"
+          style={styles.input}
           value={password}
           onChangeText={setPassword}
           secureTextEntry
         />
 
-        <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
-          <Text style={styles.forgotPassword}>Forgot Password?</Text>
+        <TouchableOpacity
+          style={styles.forgotPasswordContainer}
+          onPress={() => navigation.navigate("ForgotPassword")}
+        >
+          <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
         </TouchableOpacity>
 
-        <Button title="Login" onPress={handleLogin} />
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+          <Text style={styles.loginButtonText}>LOGIN</Text>
+        </TouchableOpacity>
 
-        <View style={styles.signupContainer}>
-          <Text style={styles.signupText}>Don't have an account? </Text>
+        <View style={styles.socialContainer}>
+          <SocialImageButton
+            source={require("../../assets/images/apple_logo.png")}
+            onPress={handleGoogleSignIn}
+          />
+          <SocialImageButton
+            source={require("../../assets/images/apple_logo.png")}
+            onPress={handleOfficeSignIn}
+          />
+          <SocialImageButton
+            source={require("../../assets/images/apple_logo.png")}
+            onPress={handleAppleSignIn}
+          />
+        </View>
+
+        <View style={styles.registerContainer}>
+          <Text style={styles.registerText}>Don't have an account? </Text>
           <TouchableOpacity onPress={() => navigation.navigate("Registration")}>
-            <Text style={styles.signupLink}>Sign Up</Text>
+            <Text style={styles.registerLinkText}>Register</Text>
           </TouchableOpacity>
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.WHITE,
-  },
-  content: {
-    flex: 1,
-    padding: 20,
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: COLORS.PRIMARY_BLACK,
-    marginBottom: 30,
-    textAlign: "center",
-  },
-  input: {
-    backgroundColor: COLORS.WHITE,
-    borderWidth: 1,
-    borderColor: COLORS.GRAY,
-    borderRadius: 8,
-    padding: 12,
-    marginVertical: 10,
-    color: COLORS.PRIMARY_BLACK,
-  },
-  forgotPassword: {
-    color: COLORS.PRIMARY_RED,
-    textAlign: "right",
-    marginBottom: 20,
-  },
-  signupContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 20,
-  },
-  signupText: {
-    color: COLORS.PRIMARY_BLACK,
-  },
-  signupLink: {
-    color: COLORS.PRIMARY_RED,
-    fontWeight: "bold",
-  },
-});
+}
