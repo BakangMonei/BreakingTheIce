@@ -168,7 +168,7 @@ const RegistrationScreen: React.FC = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#000000",
   },
   scrollContainer: {
     flexGrow: 1,
@@ -180,17 +180,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 30,
     textAlign: "center",
-    color: "#000000",
+    color: "#ffffff",
   },
   input: {
     height: 50,
-    borderColor: "#ff0000",
+    borderColor: "#ffffff",
     borderWidth: 2,
     borderRadius: 8,
     paddingHorizontal: 15,
     marginBottom: 15,
     fontSize: 16,
-    color: "#000000",
+    color: "#ffffff",
   },
   genderContainer: {
     flexDirection: "row",
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
   genderButton: {
     flex: 1,
     borderWidth: 2,
-    borderColor: "#ff0000",
+    borderColor: "#ffffff",
     paddingVertical: 12,
     marginHorizontal: 5,
     borderRadius: 8,
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ff0000",
   },
   genderButtonText: {
-    color: "#000000",
+    color: "#ffffff",
     fontWeight: "600",
   },
   button: {
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   linkText: {
-    color: "#000000",
+    color: "#ffffff",
     textAlign: "center",
     fontWeight: "600",
   },

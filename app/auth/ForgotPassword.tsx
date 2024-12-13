@@ -77,7 +77,7 @@ const ForgotPassword: React.FC = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#000000",
     justifyContent: "center",
   },
   innerContainer: {
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 15,
     textAlign: "center",
-    color: "#000000",
+    color: "#ffffff",
   },
   subtitle: {
     fontSize: 16,
@@ -99,13 +99,13 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
-    borderColor: "#ff0000",
+    borderColor: "#ffffff",
     borderWidth: 2,
     borderRadius: 8,
     paddingHorizontal: 15,
     marginBottom: 20,
     fontSize: 16,
-    color: "#000000",
+    color: "#ffffff",
   },
   button: {
     backgroundColor: "#ff0000",
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   linkText: {
-    color: "#000000",
+    color: "#ffffff",
     fontWeight: "600",
   },
 });
