@@ -37,13 +37,13 @@ const SplashScreen: React.FC = () => {
     <View style={styles.container}>
       <Animated.View
         style={[
-          styles.cookieContainer,
+          styles.iconContainer,
           {
             transform: [
               {
-                translateY: bounceValue.interpolate({
+                scale: bounceValue.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [0, -100],
+                  outputRange: [0.8, 1.2],
                 }),
               },
             ],
@@ -51,18 +51,16 @@ const SplashScreen: React.FC = () => {
         ]}
       >
         <Svg height="100" width="100" viewBox="0 0 100 100">
+          {/* Mental health-related icon (heart with a heartbeat line) */}
           <Path
-            d="M50 0 
-               Q20 20 20 50
-               Q20 80 50 100
-               Q80 80 80 50
-               Q80 20 50 0
-               Z"
-            fill="#D2691E" // Cookie color
+            d="M50 80s10-7.5 20-12c10-4.5 18-10 18-17s-7-12-14-12c-6 0-8 5-8 5s-2-5-8-5c-7 0-14 5-14 12s8 12 18 17c10 4.5 20 12 20 12z"
+            fill="none"
+            stroke="#FF0000"
+            strokeWidth="5"
           />
         </Svg>
       </Animated.View>
-      <Text style={styles.title}>Bread Recipe</Text>
+      <Text style={styles.title}>Breaking The Ice</Text>
     </View>
   );
 };
@@ -72,15 +70,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#000000", // Background color set to black
   },
-  cookieContainer: {
+  iconContainer: {
     marginBottom: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#333333",
+    color: "#FFFFFF", // Title text color set to white
   },
 });
 

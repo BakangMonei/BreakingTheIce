@@ -25,7 +25,7 @@ const LoginScreen: React.FC = ({ navigation }) => {
 
       <TextInput
         placeholder="Email"
-        placeholderTextColor="#666"
+        placeholderTextColor="#888"
         style={styles.input}
         keyboardType="email-address"
         value={email}
@@ -33,7 +33,7 @@ const LoginScreen: React.FC = ({ navigation }) => {
       />
       <TextInput
         placeholder="Password"
-        placeholderTextColor="#666"
+        placeholderTextColor="#888"
         style={styles.input}
         secureTextEntry
         value={password}
@@ -43,7 +43,7 @@ const LoginScreen: React.FC = ({ navigation }) => {
         onPress={() => navigation.navigate("ForgotPassword")}
         style={styles.forgotPassword}
       >
-        <Text style={styles.link}>Forgot Password?</Text>
+        <Text style={styles.linkText}>Forgot Password?</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={handleSubmission}>
         <Text style={styles.buttonText}>Login</Text>
@@ -53,7 +53,7 @@ const LoginScreen: React.FC = ({ navigation }) => {
         onPress={() => navigation.navigate("RegistrationPage")}
         style={styles.signUp}
       >
-        <Text style={styles.link}>Don't have an account? Sign Up</Text>
+        <Text style={styles.linkText}>Don't have an account? Sign Up</Text>
       </TouchableOpacity>
     </View>
   );
@@ -69,44 +69,52 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: "bold",
-    marginBottom: 20,
+    marginBottom: 30,
     textAlign: "center",
-    color: "#333333",
+    color: "#000000",
   },
   input: {
     height: 50,
-    borderColor: "#cccccc",
-    borderWidth: 1,
+    borderColor: "#ff0000",
+    borderWidth: 2,
     borderRadius: 8,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     marginBottom: 15,
     fontSize: 16,
+    color: "#000000",
   },
   button: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#ff0000",
     paddingVertical: 15,
     marginVertical: 20,
-    borderRadius: 5,
+    borderRadius: 8,
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3,
   },
   buttonText: {
-    color: "#fff",
+    color: "#ffffff",
     fontSize: 18,
     fontWeight: "bold",
   },
-  link: {
+  linkText: {
     color: "#000000",
     textAlign: "center",
+    fontWeight: "600",
   },
   forgotPassword: {
     alignSelf: "flex-end",
-    marginRight: 20,
+    marginRight: 10,
   },
   signUp: {
     position: "absolute",
     bottom: 20,
     left: 0,
     right: 0,
+    alignItems: "center",
   },
 });
 
