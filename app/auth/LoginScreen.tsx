@@ -8,6 +8,9 @@ import {
   Alert,
   Image,
 } from "react-native";
+import { auth, db } from "../database/firebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 const LoginScreen: React.FC = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -17,6 +20,31 @@ const LoginScreen: React.FC = ({ navigation }) => {
     if (!email || !password) {
       Alert.alert("Error", "Please fill in all fields");
       return;
+    }
+  
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+  
+      const userQuery = query(collection(db, "users"), where("uid", "==", user.uid));
+      const querySnapshot = await getDocs(userQuery);
+  
+      if (!querySnapshot.empty) {
+        const userData = querySnapshot.docs[0].data();
+        const role = userData.role;
+  
+        if (role === "SuperAdmin") {
+          navigation.navigate("SAdminHomeScreen");
+        } else if (role === "Admin") {
+          navigation.navigate("AdminHomeScreen");
+        } else {
+          navigation.navigate("Main");
+        }
+      } else {
+        Alert.alert("Error", "User data not found. Please contact support.");
+      }
+    } catch (error) {
+      Alert.alert("Error", error.message);
     }
   };
 

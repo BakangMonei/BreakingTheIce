@@ -11,6 +11,10 @@ import {
   Platform,
 } from "react-native";
 
+import { auth, db } from "../database/firebaseConfig"; // Import Firebase instance
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { collection, addDoc } from "firebase/firestore";
+
 const RegistrationScreen: React.FC = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -22,30 +26,35 @@ const RegistrationScreen: React.FC = ({ navigation }) => {
   const [rePassword, setRePassword] = useState("");
 
   const handleSubmission = async () => {
-    // Comprehensive validation
-    if (!email || !firstName || !lastName || !phoneNumber || 
-        !physicalAddress || !gender || !password || !rePassword) {
+    if (!email || !password || !rePassword) {
       Alert.alert("Error", "Please fill in all fields");
       return;
     }
-
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      Alert.alert("Error", "Please enter a valid email address");
-      return;
-    }
-
-    // Password match validation
+  
     if (password !== rePassword) {
       Alert.alert("Error", "Passwords do not match");
       return;
     }
-
-    // Password strength validation
-    if (password.length < 8) {
-      Alert.alert("Error", "Password must be at least 8 characters long");
-      return;
+  
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+  
+      await addDoc(collection(db, "users"), {
+        uid: user.uid,
+        email,
+        firstName,
+        lastName,
+        phoneNumber,
+        physicalAddress,
+        gender,
+        role: "User", // Default role for registered users
+      });
+  
+      Alert.alert("Success", "Registration complete. Please log in.");
+      navigation.navigate("LoginPage");
+    } catch (error) {
+      Alert.alert("Error", error.message);
     }
   };
 

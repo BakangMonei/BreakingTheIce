@@ -10,6 +10,8 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 
-const MainNavigator = () => <View></View>;
+const MainNavigator = () => <View>
+    
+</View>;
 
 export default MainNavigator;

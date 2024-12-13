@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 const UserHomeScreen: React.FC = () => {
   return (
     <View>
-     
+     <p>User here</p>
     </View>
   );
 };
